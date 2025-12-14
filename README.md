@@ -35,8 +35,6 @@ It allows users to log workouts, meals, and body metrics to monitor fitness prog
 
 ## Project Structure
 
-## Project Structure
-
 - `com.progresspulse.app.controller` – REST controllers  
 - `com.progresspulse.app.service` – Business logic  
 - `com.progresspulse.app.repository` – Database access  
