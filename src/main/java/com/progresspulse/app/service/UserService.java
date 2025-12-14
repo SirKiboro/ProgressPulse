@@ -1,5 +1,6 @@
 package com.progresspulse.app.service;
 
+import com.progresspulse.app.exception.ResourceNotFoundException;
 import com.progresspulse.app.model.User;
 import com.progresspulse.app.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class UserService {
 
     public User getUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
     }
 
     public List<User> getAllUsers() {

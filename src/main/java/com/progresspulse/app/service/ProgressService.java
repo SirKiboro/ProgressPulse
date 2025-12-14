@@ -1,5 +1,6 @@
 package com.progresspulse.app.service;
 
+import com.progresspulse.app.exception.ResourceNotFoundException;
 import com.progresspulse.app.model.ProgressEntry;
 import com.progresspulse.app.model.User;
 import com.progresspulse.app.repository.ProgressEntryRepository;
@@ -23,12 +24,12 @@ public class ProgressService {
 
     public ProgressEntry addProgressEntry(Long userId, ProgressEntry entry) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
 
         LocalDate date = entry.getDate() == null ? LocalDate.now() : entry.getDate();
 
         if (progressRepository.existsByUserIdAndDate(userId, date)) {
-            throw new RuntimeException("Progress entry already exists for this date");
+            throw new ResourceNotFoundException("Progress entry already exists for this date");
         }
 
         entry.setUser(user);

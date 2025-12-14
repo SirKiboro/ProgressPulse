@@ -1,5 +1,6 @@
 package com.progresspulse.app.service;
 
+import com.progresspulse.app.exception.ResourceNotFoundException;
 import com.progresspulse.app.model.User;
 import com.progresspulse.app.model.Workout;
 import com.progresspulse.app.repository.UserRepository;
@@ -23,7 +24,7 @@ public class WorkoutService {
 
     public Workout addWorkout(Long userId, Workout workout) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
 
         workout.setUser(user);
         workout.setDate(workout.getDate() == null ? LocalDate.now() : workout.getDate());

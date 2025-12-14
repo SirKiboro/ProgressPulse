@@ -22,7 +22,7 @@ public class Meal {
 
     private double protein; // grams
     private double carbs;   // grams
-    private double fat;     // grams
+    private double fats;     // grams
 
     private double calories;
 

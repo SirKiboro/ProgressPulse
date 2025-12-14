@@ -1,5 +1,6 @@
 package com.progresspulse.app.service;
 
+import com.progresspulse.app.exception.ResourceNotFoundException;
 import com.progresspulse.app.model.Meal;
 import com.progresspulse.app.model.User;
 import com.progresspulse.app.repository.MealRepository;
@@ -23,7 +24,7 @@ public class MealService {
 
     public Meal addMeal(Long userId, Meal meal) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
 
         meal.setUser(user);
         meal.setDate(meal.getDate() == null ? LocalDate.now() : meal.getDate());

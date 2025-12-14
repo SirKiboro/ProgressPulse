@@ -25,6 +25,8 @@ public class User {
 
     private String gender;
 
+    private String email;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Workout> workouts;
 
