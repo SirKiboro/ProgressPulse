@@ -21,7 +21,7 @@ public class MealController {
     }
 
     @PostMapping
-    public ResponseEntity<Meal> addMeal(
+    public ResponseEntity<Void> addMeal(
             @PathVariable Long userId,
             @Valid @RequestBody MealDTO dto) {
 
@@ -32,13 +32,27 @@ public class MealController {
         meal.setFats(dto.fats());
         meal.setDate(dto.date());
 
-        Meal created = mealService.addMeal(userId, meal);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+        mealService.addMeal(userId, meal);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MealDTO>getMeal(@PathVariable Long id){
+        return ResponseEntity.ok(mealService.getMealById(id));
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void>deleteMeal(@PathVariable Long id){
+        mealService.deleteMeal(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
     public ResponseEntity<List<Meal>> getAllMeals(@PathVariable Long userId) {
         return ResponseEntity.ok(mealService.getMealsForUser(userId));
     }
+
+
+
+
 }
 

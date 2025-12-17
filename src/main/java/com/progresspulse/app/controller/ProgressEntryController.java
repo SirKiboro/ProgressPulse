@@ -21,7 +21,7 @@ public class ProgressEntryController {
     }
 
     @PostMapping
-    public ResponseEntity<ProgressEntry> addProgressEntry(
+    public ResponseEntity<Void> addProgressEntry(
             @PathVariable Long userId,
             @Valid @RequestBody ProgressEntryDTO dto) {
 
@@ -31,12 +31,17 @@ public class ProgressEntryController {
         entry.setDate(dto.date());
 
         ProgressEntry created = progressService.addProgressEntry(userId, entry);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<ProgressEntry>> getProgressTimeline(@PathVariable Long userId) {
+        return ResponseEntity.ok(progressService.getProgressTimeline(userId));
     }
 
     @GetMapping
-    public ResponseEntity<List<ProgressEntry>> getProgressTimeline(@PathVariable Long userId) {
-        return ResponseEntity.ok(progressService.getProgressTimeline(userId));
+    public ResponseEntity<List<ProgressEntryDTO>> getAllProgressEntries(@PathVariable Long userId){
+        return ResponseEntity.ok(progressService.getAllProgressEntries(userId));
     }
 }
 

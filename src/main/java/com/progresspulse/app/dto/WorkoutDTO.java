@@ -6,9 +6,10 @@ import jakarta.validation.constraints.Positive;
 import java.time.LocalDate;
 
 public record WorkoutDTO(
+        Long id,
         @NotBlank String type,             // e.g., "Push-ups", "Running"
         @Positive int durationMinutes,     // Duration in minutes
-        @Positive int caloriesBurned,      // Calories burned
+        @Positive double caloriesBurned,      // Calories burned
         LocalDate date                     // Optional; default to today in service if null
 ) {}
 

@@ -21,22 +21,29 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<Void> createUser(@Valid @RequestBody UserDTO userDTO) {
         User user = new User();
         user.setName(userDTO.name());
         user.setEmail(userDTO.email());
-        User created = userService.createUser(user);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+        userService.createUser(user);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
+    public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        UserDTO dto = new UserDTO(user.getName(), user.getEmail());
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> dtos = userService.getAllUsers()
+                .stream()
+                .map(u -> new UserDTO(u.getName(), u.getEmail()))
+                .toList();
+        return ResponseEntity.ok(dtos);
     }
 
     @DeleteMapping("/{id}")

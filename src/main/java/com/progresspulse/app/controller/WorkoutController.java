@@ -21,22 +21,36 @@ public class WorkoutController {
     }
 
     @PostMapping
-    public ResponseEntity<Workout> addWorkout(
+    public ResponseEntity<Void> addWorkout(
             @PathVariable Long userId,
-            @Valid @RequestBody WorkoutDTO dto) {
+            @Valid @RequestBody WorkoutDTO workoutDTO) {
 
         Workout workout = new Workout();
-        workout.setExerciseType(dto.type());
-        workout.setDurationMinutes(dto.durationMinutes());
-        workout.setCaloriesBurned(dto.caloriesBurned());
-        workout.setDate(dto.date());
+        workout.setExerciseType(workoutDTO.type());
+        workout.setDurationMinutes(workoutDTO.durationMinutes());
+        workout.setCaloriesBurned(workoutDTO.caloriesBurned());
+        workout.setDate(workoutDTO.date());
 
-        Workout created = workoutService.addWorkout(userId, workout);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+        workoutService.addWorkout(userId,workout);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<WorkoutDTO> getWorkout(@PathVariable Long id) {
+        return ResponseEntity.ok(workoutService.getWorkoutById(id));
     }
 
     @GetMapping
     public ResponseEntity<List<Workout>> getAllWorkouts(@PathVariable Long userId) {
         return ResponseEntity.ok(workoutService.getUserWorkouts(userId));
+    }
+
+    @DeleteMapping("/{workoutId}")
+    public ResponseEntity<Void>deleteWorkout(
+            @PathVariable Long userId,
+            @PathVariable Long workoutId){
+
+        workoutService.deleteWorkout(userId, workoutId);
+        return ResponseEntity.noContent().build();
     }
 }
