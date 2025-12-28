@@ -1,12 +1,13 @@
 package com.progresspulse.app.dto;
 
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record ProgressEntryDTO(
-        Long id,
-        Long entryId,
-        @Positive double weightKg,      // User weight in kg
-        @Positive double bodyFatPercent,    // Body fat percentage
-        LocalDate date                   // Optional; service defaults to today if null
-){}
+        @NotNull LocalDate date,
+        @NotNull @DecimalMin("0.0") BigDecimal weight,
+        @NotNull @DecimalMin("0.0") BigDecimal bodyFatPercent,
+        @Size(max = 500) String notes,
+        @NotNull Long userId
+) {}

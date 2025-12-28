@@ -1,6 +1,7 @@
 package com.progresspulse.app.service;
 
-import com.progresspulse.app.dto.ProgressEntryDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.progresspulse.app.exception.ResourceNotFoundException;
 import com.progresspulse.app.model.ProgressEntry;
 import com.progresspulse.app.model.User;
@@ -10,63 +11,60 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProgressService {
 
-    private final ProgressEntryRepository progressRepository;
+    private final ProgressEntryRepository entryRepository;
     private final UserRepository userRepository;
 
-    public ProgressService(ProgressEntryRepository progressRepository,
+    public ProgressService(ProgressEntryRepository entryRepository,
                            UserRepository userRepository) {
-        this.progressRepository = progressRepository;
+        this.entryRepository = entryRepository;
         this.userRepository = userRepository;
     }
 
+    // Create a progress entry for a user
     public ProgressEntry addProgressEntry(Long userId, ProgressEntry entry) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "User not found with ID: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
 
-        LocalDate date = entry.getDate();
         if (entry.getDate() == null) {
             entry.setDate(LocalDate.now());
         }
 
-        if (progressRepository.existsByUserIdAndDate(userId, date)) {
-            throw new ResourceNotFoundException("Progress entry already exists for this date");
+        // Prevent duplicate entries for the same date
+        if (entryRepository.existsByUserIdAndDate(userId, entry.getDate())) {
+            throw new IllegalStateException("Progress entry already exists for this date");
         }
-
 
         entry.setUser(user);
-        return progressRepository.save(entry);
+        return entryRepository.save(entry);
     }
 
+    // Retrieve a single progress entry by ID
+    public ProgressEntry getProgressEntryById(Long id) {
+        return entryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("ProgressEntry not found with ID: " + id));
+    }
+
+    // Retrieve all progress entries for a user, ordered by date
     public List<ProgressEntry> getProgressTimeline(Long userId) {
         if (!userRepository.existsById(userId)) {
-            throw new ResourceNotFoundException(
-                    "User not found with id: " + userId);
+            throw new ResourceNotFoundException("User not found with ID: " + userId);
         }
-        return progressRepository.findByUserIdOrderByDateAsc(userId);
+        return entryRepository.findByUserIdOrderByDateAsc(userId);
     }
 
+    // Delete a progress entry
+    public void deleteProgressEntry(Long userId, Long entryId) {
+        ProgressEntry entry = entryRepository.findById(entryId)
+                .orElseThrow(() -> new ResourceNotFoundException("ProgressEntry not found with ID: " + entryId));
 
-    public List<ProgressEntryDTO> getAllProgressEntries(Long userId) {
-        if (!userRepository.existsById(userId)) {
-            throw new ResourceNotFoundException(
-                    "User not found with id: " + userId);
-
+        if (!entry.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("ProgressEntry does not belong to user");
         }
-        return progressRepository.findByUserId(userId).stream()
-                .map(entry -> new ProgressEntryDTO(
-                        entry.getId(),
-                        entry.getUser().getId(),
-                        entry.getWeight(),
-                        entry.getBodyFatPercent(),
-                        entry.getDate()
-                        
-                ))
-                .collect(Collectors.toList());
+
+        entryRepository.delete(entry);
     }
 }

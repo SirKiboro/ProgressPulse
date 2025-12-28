@@ -1,12 +1,17 @@
 package com.progresspulse.app.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
+import com.progresspulse.app.model.MealType;
+import jakarta.validation.constraints.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public record MealDTO(@NotBlank String name,         // e.g., "Chicken, beef, beans" etc
-                      @Positive int protein,         // in grams
-                      @Positive int carbs,           // in grams
-                      @Positive int fats,            // in grams
-                      LocalDate date                 // Optional; service defaults to today if null
+public record MealDTO(
+        @NotNull LocalDate date,
+        @NotNull MealType mealType,
+        @NotNull @DecimalMin("0.0") BigDecimal protein,
+        @NotNull @DecimalMin("0.0") BigDecimal carbs,
+        @NotNull @DecimalMin("0.0") BigDecimal fats,
+        @NotNull @DecimalMin("0.0") BigDecimal calories,
+        @Size(max = 500) String foodItems,
+        @NotNull Long userId
 ) {}

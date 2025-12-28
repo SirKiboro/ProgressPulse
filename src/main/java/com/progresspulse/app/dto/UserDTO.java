@@ -1,10 +1,14 @@
 package com.progresspulse.app.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import com.progresspulse.app.model.Gender;
+import jakarta.validation.constraints.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public record UserDTO(
-        @NotBlank @Size(min = 2, max = 50) String name,
-        @Email String email
+        @NotBlank @Size(min = 2, max = 100) String name,
+        @NotBlank @Email @Size(max = 255) String email,
+        @NotNull @Past LocalDate dateOfBirth,
+        @NotNull @DecimalMin("50.0") @DecimalMax("300.0") BigDecimal heightCm,
+        @NotNull Gender gender
 ) {}

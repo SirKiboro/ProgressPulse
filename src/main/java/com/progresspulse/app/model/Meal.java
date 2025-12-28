@@ -2,36 +2,60 @@ package com.progresspulse.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "meals")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
-
 public class Meal {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "meal_date", nullable = false)
     private LocalDate date;
 
-    private String mealType; // Breakfast, Lunch, Dinner, Snack
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private MealType mealType;
 
-    private double protein; // grams
-    private double carbs;   // grams
-    private double fats;     // grams
+    @Column(nullable = false, precision = 7, scale = 2)
+    private BigDecimal protein;
 
-    private double calories;
+    @Column(nullable = false, precision = 7, scale = 2)
+    private BigDecimal carbs;
 
+    @Column(nullable = false, precision = 7, scale = 2)
+    private BigDecimal fats;
+
+    @Column(nullable = false, precision = 7, scale = 2)
+    private BigDecimal calories;
+
+    @Column(length = 500)
     private String foodItems;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
     private User user;
 
+    // --- Audit fields ---
+    @CreationTimestamp
+    @Column(updatable = false, nullable = false)
+    private Instant createdAt;
+
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private Instant updatedAt;
 }

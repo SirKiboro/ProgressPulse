@@ -13,4 +13,5 @@ public interface ProgressEntryRepository extends JpaRepository<ProgressEntry, Lo
     List<ProgressEntry> findByUserIdOrderByDateAsc(Long userId);
 
     boolean existsByUserIdAndDate(Long userId, LocalDate date);
+
 }

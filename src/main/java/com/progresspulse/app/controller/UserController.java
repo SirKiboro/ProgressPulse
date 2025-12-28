@@ -25,15 +25,24 @@ public class UserController {
         User user = new User();
         user.setName(userDTO.name());
         user.setEmail(userDTO.email());
-        userService.createUser(user);
+        user.setDateOfBirth(userDTO.dateOfBirth());
+        user.setHeightCm(userDTO.heightCm());
+        user.setGender(userDTO.gender());
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        userService.createUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
         User user = userService.getUserById(id);
-        UserDTO dto = new UserDTO(user.getName(), user.getEmail());
+        UserDTO dto = new UserDTO(
+                user.getName(),
+                user.getEmail(),
+                user.getDateOfBirth(),
+                user.getHeightCm(),
+                user.getGender()
+        );
         return ResponseEntity.ok(dto);
     }
 
@@ -41,7 +50,13 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> dtos = userService.getAllUsers()
                 .stream()
-                .map(u -> new UserDTO(u.getName(), u.getEmail()))
+                .map(u -> new UserDTO(
+                        u.getName(),
+                        u.getEmail(),
+                        u.getDateOfBirth(),
+                        u.getHeightCm(),
+                        u.getGender()
+                ))
                 .toList();
         return ResponseEntity.ok(dtos);
     }

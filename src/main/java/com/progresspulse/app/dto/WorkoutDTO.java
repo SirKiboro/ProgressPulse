@@ -1,16 +1,15 @@
 package com.progresspulse.app.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import com.progresspulse.app.model.ExerciseType;
+import jakarta.validation.constraints.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record WorkoutDTO(
-        Long id,
-        @NotBlank String type,             // e.g., "Push-ups", "Running"
-        @Positive int durationMinutes,     // Duration in minutes
-        @Positive double caloriesBurned,      // Calories burned
-        LocalDate date                     // Optional; default to today in service if null
+        @NotNull LocalDate date,
+        @NotNull ExerciseType exerciseType,
+        @Min(1) int durationMinutes,
+        @NotNull @DecimalMin("0.0") BigDecimal caloriesBurned,
+        @Size(max = 500) String notes,
+        @NotNull Long userId
 ) {}
-
-
