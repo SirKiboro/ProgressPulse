@@ -1,17 +1,23 @@
 package com.progresspulse.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -24,7 +30,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class User {
+@EntityListeners(AuditingEntityListener.class)
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +53,13 @@ public class User {
 
     @Column(nullable = false, length = 255)
     private String email;
+
+    @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+
+    @Column(nullable = false)
+    private String role = "ROLE_USER";
 
     // --- Relationships ---
 
@@ -80,7 +94,7 @@ public class User {
     private Instant createdAt;
 
     @UpdateTimestamp
-    @Column(nullable = false)
+    @Column
     private Instant updatedAt;
 
     // --- Relationship helpers ---
@@ -113,5 +127,36 @@ public class User {
     public void removeProgressEntry(ProgressEntry entry) {
         progressEntries.remove(entry);
         entry.setUser(null);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Converts role string into a format Spring Security understands
+        return List.of(new SimpleGrantedAuthority(role));
+    }
+
+    @Override
+    public String getUsername() {
+        return email; //use email as the username
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // Set to true for simplicity
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

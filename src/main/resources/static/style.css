@@ -1,0 +1,122 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial Black', sans-serif;
+}
+
+body {
+    background-color: #0a0a0a;
+    /* This creates a dark carbon-fiber pattern without needing an external image */
+    background-image:
+        radial-gradient(circle at 2px 2px, #1a1a1a 1px, transparent 0);
+    background-size: 24px 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: white;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Header Styles */
+.main-logo {
+    color: #ffcc00;
+    font-size: 4.5rem;
+    font-style: italic;
+    line-height: 0.9;
+    text-shadow: 3px 3px 0px #000;
+}
+
+.sub-logo {
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    margin-top: 5px;
+}
+
+.location {
+    font-size: 0.8rem;
+    letter-spacing: 4px;
+    color: #bbb;
+}
+
+.tagline {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 5px;
+}
+
+.divider-line {
+    height: 4px;
+    background: linear-gradient(to right, #006400 33.3%, #ffffff 33.3%, #ffffff 66.6%, #cc0000 66.6%);
+    margin: 15px 0;
+}
+
+/* Form Card */
+.registration-card {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+}
+
+.registration-card h3 {
+    color: #ffcc00;
+    margin-bottom: 15px;
+    font-size: 1.6rem;
+}
+
+.form-container {
+    border: 3px solid #ffcc00;
+    padding: 25px 20px;
+    border-radius: 4px;
+    position: relative;
+}
+
+input, select {
+    width: 100%;
+    background: #111;
+    border: 1px solid #ffcc00;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 12px;
+    color: white;
+    font-size: 1rem;
+}
+
+/* Button with Overlap Effect */
+.register-btn {
+    width: 85%;
+    background: linear-gradient(to bottom, #ff3333, #880000);
+    color: white;
+    border: none;
+    padding: 15px;
+    font-weight: 900;
+    font-size: 1.2rem;
+    border-radius: 4px;
+    border-bottom: 5px solid #004400; /* Green shadow */
+    cursor: pointer;
+    position: absolute;
+    bottom: -25px;
+    left: 7.5%;
+    transition: 0.2s;
+}
+
+.register-btn:hover {
+    transform: scale(1.02);
+}
+
+.footer-link {
+    margin-top: 50px;
+    font-size: 0.9rem;
+}
+
+.footer-link a {
+    color: white;
+    font-weight: bold;
+}

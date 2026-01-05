@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Pulse Registration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="main-container">
+    <header class="logo-section">
+        <h1 class="main-logo">PULSE</h1>
+        <h2 class="sub-logo">PROGRESS PULSE</h2>
+        <p class="location">NAIROBI</p>
+        <div class="divider-line"></div>
+        <p class="tagline">JOIN THE TRIBE. PIGA SHUGHULI.</p>
+    </header>
+
+    <section class="registration-card">
+        <h3>CREATE YOUR ACCOUNT.</h3>
+
+        <form class="form-container" id="userRegistration">
+            <div class="input-group">
+                <input type="text" id="name" placeholder="Full Name" required>
+                <input type="email" id="email" placeholder="Email Address" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <input type="date" id="dateOfBirth" required>
+                <input type="number" id="heightCm" placeholder="Height in cm" required>
+
+                <select id="gender" required>
+                    <option value="" disabled selected>Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <button type="submit" class="register-btn">REGISTER NOW!</button>
+        </form>
+
+        <div class="footer-link">
+            <input type="checkbox" id="existing">
+            <label for="existing">Already have an account? <a href="#">Log in.</a></label>
+        </div>
+    </section>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

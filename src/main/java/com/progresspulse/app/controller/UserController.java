@@ -11,7 +11,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     private final UserService userService;
@@ -31,6 +31,7 @@ public class UserController {
 
         userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+
     }
 
     @GetMapping("/{id}")

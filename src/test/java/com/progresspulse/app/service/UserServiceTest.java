@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -24,6 +25,9 @@ public class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private UserService userService;
 
@@ -35,6 +39,7 @@ public class UserServiceTest {
 
         sampleUser.setName("John Doe");
         sampleUser.setEmail("john@example.com");
+        sampleUser.setPassword("rawPassword123");
         sampleUser.setGender(Gender.valueOf("MALE"));
         sampleUser.setHeightCm(BigDecimal.valueOf(172));
         sampleUser.setDateOfBirth(LocalDate.of(2000,12,1));
@@ -51,6 +56,7 @@ public class UserServiceTest {
 
        assertNotNull(created);
        assertEquals("john@example.com", created.getEmail());
+
        verify(userRepository, times(1)).save(any(User.class));
 
 
