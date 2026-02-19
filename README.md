@@ -44,6 +44,11 @@ It allows users to log workouts, meals, and body metrics to monitor fitness prog
 - `com.progresspulse.app.exception` – Custom exceptions  
 - `com.progresspulse.app.util` – Helper utilities  
 
+
+## Architecture Blueprint
+
+- Implementation-ready system architecture: `docs/progress-pulse-system-architecture.md`
+
 ## License
 
 This project is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
